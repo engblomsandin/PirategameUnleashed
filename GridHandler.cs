@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,9 +26,6 @@ namespace PirategameUnleashed
 
         public int rowCount { get; private set; }
         public int columnCount { get; private set; }
-        public Texture2D seablip { get; private set; }
-        public Texture2D landblip { get; private set; }
-        public Texture2D borderblip { get; private set; }
         public SpriteFont systemFont { get; private set; }
         public List<List<Blip>> blipGrid { get; private set; }
 
@@ -35,13 +34,11 @@ namespace PirategameUnleashed
 
         }
 
-        public void initializeGrid(int rowCount, int columnCount, Texture2D seablip, Texture2D landblip, Texture2D borderblip, SpriteFont systemfont)
+        public void initializeGrid(int rowCount, int columnCount, List<Texture2D> blipList, SpriteFont systemfont)
         {
 
             this.rowCount = rowCount;
             this.columnCount = columnCount;
-            this.seablip = seablip;
-            this.landblip = landblip;
             this.systemFont = systemfont;
             this.blipGrid = new List<List<Blip>>();
             for (int i = 0; i < rowCount; i++)
@@ -49,9 +46,13 @@ namespace PirategameUnleashed
                 this.blipGrid.Add(new List<Blip>());
                 for (int j = 0; j < columnCount; j++)
                 {
-                    Console.WriteLine(j);
-                    Console.WriteLine(i);
-                    this.blipGrid[i].Add(new Blip(j, i, seablip, landblip, borderblip, systemfont, rowCount, columnCount));
+                    this.blipGrid[i].Add(new Blip(
+                        DataVariables.tileWidth + j * DataVariables.tileWidth,
+                        DataVariables.tileHeight + i * DataVariables.tileHeight,
+                        blipList,
+                        systemfont,
+                        rowCount,
+                        columnCount));
                 }
             }
         }

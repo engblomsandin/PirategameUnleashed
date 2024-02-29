@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Reflection.Metadata;
 
 namespace PirategameUnleashed
@@ -10,14 +11,10 @@ namespace PirategameUnleashed
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private Texture2D seablip;
-        private Texture2D landblip;
-        private Texture2D background;
-        private Texture2D borderblip;
-        private SpriteFont systemFont;
 
-        private int rowCount = 200;
-        private int columnCount = 200;
+        private int columnCount = DataVariables.columnCount;
+        private int rowCount = DataVariables.rowCount;
+        
 
         public GridHandler gridHandler;
         public Painterboy painterBoy;
@@ -25,6 +22,9 @@ namespace PirategameUnleashed
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = 1600;
+            _graphics.PreferredBackBufferHeight = 900;
+            _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -40,15 +40,25 @@ namespace PirategameUnleashed
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = Content.Load<Texture2D>("background");
-            seablip = Content.Load<Texture2D>("seablip");
-            landblip = Content.Load<Texture2D>("landblip");
-            borderblip = Content.Load<Texture2D>("borderblip");
-            systemFont = Content.Load<SpriteFont>("SystemFont");
+            Texture2D background = Content.Load<Texture2D>("background");
+            Texture2D seablip = Content.Load<Texture2D>("seablip");
+            Texture2D landblip = Content.Load<Texture2D>("landblip");
+            Texture2D cityblip = Content.Load<Texture2D>("cityblip");
+            Texture2D companyblip = Content.Load<Texture2D>("companyblip");
+
+            SpriteFont systemFont = Content.Load<SpriteFont>("SystemFont");
+
+            List<Texture2D> blipList = new List<Texture2D>();
+            blipList.Add(background);
+            blipList.Add(seablip);
+            blipList.Add(landblip);
+            blipList.Add(cityblip);
+            blipList.Add(companyblip);
+
 
             painterBoy = Painterboy.Instance;
             gridHandler = GridHandler.Instance;
-            gridHandler.initializeGrid(rowCount, columnCount, seablip, landblip, borderblip, systemFont);
+            gridHandler.initializeGrid(rowCount, columnCount, blipList, systemFont);
 
             // TODO: use this.Content to load your game content here
         }
@@ -69,7 +79,7 @@ namespace PirategameUnleashed
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(background, new Rectangle(0, 0, 800, 500), Color.White);
+            //_spriteBatch.Draw(background, new Rectangle(0, 0, 800, 500), Color.White);
 
             for (int i = 0; i < rowCount; i++)
             {

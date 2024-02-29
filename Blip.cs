@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,13 @@ namespace PirategameUnleashed
 {
     public class Blip
     {
-        private bool isBorder = false;
+        private int rowNumber = 0;
+        private int columnNumber = 0;
 
         private int xPosition = 0;
         private int yPosition = 0;
+
+
 
         public event EventHandler LeftClick;
 
@@ -23,7 +27,8 @@ namespace PirategameUnleashed
 
         private Texture2D seablip;
         private Texture2D landblip;
-        private Texture2D borderblip;
+        private Texture2D cityblip;
+        private Texture2D companyblip;
         private SpriteFont systemFont;
 
         private blipType blipState;
@@ -34,32 +39,45 @@ namespace PirategameUnleashed
         {
             seablip,
             landblip,
-            borderblip
+            cityblip,
+            companyblip,
         }
 
 
-        public Blip(int x, int y, Texture2D seablip, Texture2D landblip, Texture2D borderblip, SpriteFont systemFont, int rowCount, int columnCount)
+        public Blip(int x, int y, List<Texture2D> blipList, SpriteFont systemFont, int rowCount, int columnCount)
         {
-            if (x == 0 || y == 0 || x == columnCount - 1 || y == rowCount - 1)
-            {
-                this.isBorder = true;
-            }
             this.xPosition = x;
             this.yPosition = y;
+            this.rowNumber = y / DataVariables.tileHeight;
+            this.columnNumber = x / DataVariables.tileWidth;
 
-            this.seablip = seablip;
-            this.landblip = landblip;
-            this.borderblip = borderblip;
+            this.seablip = blipList.ElementAt(1);
+            this.landblip = blipList.ElementAt(2);
+            this.cityblip = blipList.ElementAt(3);
+            this.companyblip = blipList.ElementAt(4);
             this.systemFont = systemFont;
 
-            this.blipState = blipType.seablip;
+            if (this.columnNumber <= 3 || this.columnNumber >= 60)
+            {
+                this.blipState = blipType.landblip;
+            }
+            else
+            {
+                this.blipState = blipType.seablip;
+            }
+
+            if(this.columnNumber == 3 && this.rowNumber == 15)
+            {
+                this.blipState = blipType.cityblip;
+            }
 
             this.LeftClick += this.onLeftClick;
         }
 
         public void onLeftClick(object sender, System.EventArgs e)
         {
-
+            Debug.WriteLine("click");
+            setState(blipType.cityblip);
         }
 
         public int getxPosition()
@@ -73,7 +91,8 @@ namespace PirategameUnleashed
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.getBlipTexture(), new Rectangle(this.xPosition, this.yPosition, 20, 20), Color.Gray);
+            spriteBatch.Draw(this.getBlipTexture(), new Rectangle(this.xPosition, this.yPosition, DataVariables.tileWidth, DataVariables.tileHeight), Color.White);
+            //spriteBatch.DrawString(systemFont, columnNumber + "," + rowNumber, new Vector2(this.xPosition, this.yPosition), Color.Black);
         }
 
 
@@ -86,15 +105,20 @@ namespace PirategameUnleashed
                 case blipType.landblip:
                     return this.landblip;
 
-                case blipType.borderblip:
-                    return this.borderblip;
+                case blipType.cityblip:
+                    return this.cityblip;
+
+                case blipType.companyblip:
+                    return this.companyblip;
 
                 default:
-                    return this.borderblip;
+                    return this.seablip;
             }
         }
 
+        private void setState(blipType type)
+        {
+            this.blipState = type;
+        }
     }
-
-
 }
