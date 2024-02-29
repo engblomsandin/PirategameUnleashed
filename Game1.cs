@@ -45,6 +45,7 @@ namespace PirategameUnleashed
             Texture2D landblip = Content.Load<Texture2D>("landblip");
             Texture2D cityblip = Content.Load<Texture2D>("cityblip");
             Texture2D companyblip = Content.Load<Texture2D>("companyblip");
+            Texture2D shipblip = Content.Load<Texture2D>("shipblip");
 
             SpriteFont systemFont = Content.Load<SpriteFont>("SystemFont");
 
@@ -54,6 +55,7 @@ namespace PirategameUnleashed
             blipList.Add(landblip);
             blipList.Add(cityblip);
             blipList.Add(companyblip);
+            blipList.Add(shipblip);
 
 
             painterBoy = Painterboy.Instance;
@@ -68,7 +70,13 @@ namespace PirategameUnleashed
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < columnCount; j++)
+                {
+                    gridHandler.getGrid()[i][j].Update(gameTime);
+                }
+            }
 
             base.Update(gameTime);
         }

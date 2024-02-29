@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace PirategameUnleashed
         public SpriteFont systemFont { get; private set; }
         public List<List<Blip>> blipGrid { get; private set; }
 
+        public RouteCalculator routeCalculator;
+
         private GridHandler()
         {
 
@@ -36,6 +39,7 @@ namespace PirategameUnleashed
 
         public void initializeGrid(int rowCount, int columnCount, List<Texture2D> blipList, SpriteFont systemfont)
         {
+            routeCalculator = RouteCalculator.Instance;
 
             this.rowCount = rowCount;
             this.columnCount = columnCount;
@@ -55,7 +59,10 @@ namespace PirategameUnleashed
                         columnCount));
                 }
             }
+            routeCalculator.initializeRouteCalculator(this.blipGrid);
         }
+
+
 
         public List<List<Blip>> getGrid()
         {
