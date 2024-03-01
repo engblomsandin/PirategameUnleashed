@@ -26,24 +26,24 @@ namespace PirategameUnleashed
         private MouseState _currentMouse;
         private MouseState _previousMouse;
 
-        private Texture2D seablip;
-        private Texture2D landblip;
-        private Texture2D cityblip;
-        private Texture2D shipblip;
-        private Texture2D companyblip;
+        private Texture2D seaBlip;
+        private Texture2D landBlip;
+        private Texture2D cityBlip;
+        private Texture2D shipBlip;
+        private Texture2D companyBlip;
         private SpriteFont systemFont;
 
-        private blipType blipState;
+        private BlipType blipState;
 
         private GridHandler gridHandler = GridHandler.Instance;
 
-        enum blipType
+        enum BlipType
         {
-            seablip,
-            landblip,
-            cityblip,
-            companyblip,
-            shipblip,
+            seaBlip,
+            landBlip,
+            cityBlip,
+            companyBlip,
+            shipBlip,
         }
 
 
@@ -54,26 +54,26 @@ namespace PirategameUnleashed
             this.rowNumber = y / DataVariables.tileHeight;
             this.columnNumber = x / DataVariables.tileWidth;
 
-            this.seablip = blipList.ElementAt(1);
-            this.landblip = blipList.ElementAt(2);
-            this.cityblip = blipList.ElementAt(3);
-            this.companyblip = blipList.ElementAt(4);
-            this.shipblip = blipList.ElementAt(5);
+            this.seaBlip = blipList.ElementAt(1);
+            this.landBlip = blipList.ElementAt(2);
+            this.cityBlip = blipList.ElementAt(3);
+            this.companyBlip = blipList.ElementAt(4);
+            this.shipBlip = blipList.ElementAt(5);
             this.systemFont = systemFont;
 
             if (this.columnNumber <= 3 || this.columnNumber >= 60)
             {
-                this.blipState = blipType.landblip;                
+                this.blipState = BlipType.landBlip;                
             }
             else
             {
-                this.blipState = blipType.seablip;
+                this.blipState = BlipType.seaBlip;
                 this.navigatable = true;
             }
 
             if (this.columnNumber == 3 && this.rowNumber == 15)
             {
-                this.blipState = blipType.cityblip;
+                this.blipState = BlipType.cityBlip;
             }
 
             this.LeftClick += this.onLeftClick;
@@ -82,7 +82,15 @@ namespace PirategameUnleashed
 
         public void onLeftClick(object sender, System.EventArgs e)
         {
-            setState(blipType.companyblip);
+            switch (blipState)
+            {
+                case BlipType.seaBlip:
+                    setState(BlipType.shipBlip);
+                    break;
+                default:
+            setState(BlipType.companyBlip);
+                    break;
+            }
         }
 
         public void onRightClick(object sender, System.EventArgs e)
@@ -110,27 +118,27 @@ namespace PirategameUnleashed
         {
             switch (this.blipState)
             {
-                case blipType.seablip:
-                    return this.seablip;
+                case BlipType.seaBlip:
+                    return this.seaBlip;
 
-                case blipType.landblip:
-                    return this.landblip;
+                case BlipType.landBlip:
+                    return this.landBlip;
 
-                case blipType.cityblip:
-                    return this.cityblip;
+                case BlipType.cityBlip:
+                    return this.cityBlip;
 
-                case blipType.companyblip:
-                    return this.companyblip;
+                case BlipType.companyBlip:
+                    return this.companyBlip;
 
-                case blipType.shipblip:
-                    return this.shipblip;
+                case BlipType.shipBlip:
+                    return this.shipBlip;
 
                 default:
-                    return this.seablip;
+                    return this.seaBlip;
             }
         }
 
-        private void setState(blipType type)
+        private void setState(BlipType type)
         {
             this.blipState = type;
         }
