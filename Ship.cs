@@ -27,13 +27,8 @@ namespace PirategameUnleashed
 
         public void Update(GameTime gameTime)
         {
+            //if(gameTime.ElapsedGameTime.Ticks >= (något)
         }
 
-        public void setCurrentBlip(Blip newBlip)
-        {
-            this.currentBlip.setState(BlipType.seaBlip);
-            this.currentBlip = newBlip;
-            this.currentBlip.setState(BlipType.shipBlip);
-        }
     }
 }

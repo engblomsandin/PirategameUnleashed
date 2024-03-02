@@ -75,10 +75,10 @@ namespace PirategameUnleashed
             switch (blipState)
             {
                 case BlipType.seaBlip:
-                    setState(BlipType.shipBlip);
+                    makeShip();
                     break;
                 default:
-            setState(BlipType.companyBlip);
+                    makeSea();
                     break;
             }
         }
@@ -128,10 +128,16 @@ namespace PirategameUnleashed
             }
         }
 
-        public void setState(BlipType type)
+        public void makeShip()
         {
-            this.blipState = type;
+            this.blipState = BlipType.shipBlip;
         }
+
+        public void makeSea()
+        {
+            this.blipState = BlipType.seaBlip;
+        }
+
         public void Update(GameTime gameTime)
         {
             _previousMouse = _currentMouse;

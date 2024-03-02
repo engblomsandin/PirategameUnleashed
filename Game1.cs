@@ -79,13 +79,15 @@ namespace PirategameUnleashed
                 shipList[i].Update(gameTime);
             }
 
-            for (int i = 0; i < rowCount; i++)
+
+            /** Makes this a comment in case it will cause unnessecary lag later on
+             * for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
                 {
                     gridHandler.getGrid()[i][j].Update(gameTime); 
                 }
-            }
+            }*/
 
             base.Update(gameTime);
         }
