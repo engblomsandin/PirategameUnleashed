@@ -27,7 +27,7 @@ namespace PirategameUnleashed
         private HorizontalDirection horDir;
         private VerticalDirection verDir;
 
-        Queue route = new Queue();
+        Queue<Blip> route = new Queue<Blip>();
 
         public static RouteCalculator instance = null;
 
@@ -65,8 +65,9 @@ namespace PirategameUnleashed
             this.blipGrid = blipGrid;
         }
 
-        public Queue calculate(Blip start, Blip Destination)
+        public Queue<Blip> calculate(Blip start, Blip Destination)
         {
+            Debug.WriteLine("Start Calculation");
             this.route.Clear();
             this.destinationX = Destination.getColumn();
             this.destinationY = Destination.getRow();
@@ -74,22 +75,9 @@ namespace PirategameUnleashed
             this.startX = start.getColumn();
             this.startY = start.getRow();
 
-            if(this.destinationX > startX)
-            {
-                this.horDir = HorizontalDirection.east;
-            }
-            else
-            {
-                this.horDir = HorizontalDirection.west;
-            }
-            if (this.destinationY > startY)
-            {
-                this.verDir = VerticalDirection.south;
-            }
-            else
-            {
-                this.verDir = VerticalDirection.north;
-            }
+            getDirection();
+            
+            explore(startX, startY);
 
             Debug.WriteLine(this.route.Count);
 
@@ -99,11 +87,11 @@ namespace PirategameUnleashed
         public void explore(int x, int y)
         {
             Debug.WriteLine("Went to " + x + "," + y);
+            Debug.WriteLine("Destination is " + destinationX + "," + destinationY);
 
-            if (x < 0 || y < 0 || x == DataVariables.columnCount + 1 || y == DataVariables.rowCount + 1)
-                return;
+            getDirection();
 
-            if (finished)
+            if (x < 0 || y < 0 || x == DataVariables.columnCount -1 || y == DataVariables.rowCount - 1)
                 return;
 
             route.Enqueue(blipGrid.ElementAt(y).ElementAt(x));
@@ -111,15 +99,32 @@ namespace PirategameUnleashed
             if(x == destinationX && y == destinationY)
                 this.finished= true;
 
-            if(this.horDir == HorizontalDirection.west)
+            if (finished)
+                return;
+
+            if (this.horDir == HorizontalDirection.west)
             {
+                Debug.WriteLine("the destination is to the west, going west");
                 if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
                     explore(x - 1, y);
             }
             if (this.verDir == VerticalDirection.north)
             {
+                Debug.WriteLine("the destination is to the north, going north");
                 if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
                     explore(x, y - 1);
+            }
+            if (this.horDir == HorizontalDirection.east)
+            {
+                Debug.WriteLine("the destination is to the east, going east");
+                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
+                    explore(x - 1, y);
+            }
+            if (this.verDir == VerticalDirection.south)
+            {
+                Debug.WriteLine("the destination is to the south, going south");
+                if (blipGrid.ElementAt(y + 1).ElementAt(x).isNavigatable())
+                    explore(x, y + 1);
             }
             else
             {
@@ -135,6 +140,26 @@ namespace PirategameUnleashed
 
             if (finished)
                 return;
+        }
+
+        public void getDirection()
+        {
+            if (this.destinationX > startX)
+            {
+                this.horDir = HorizontalDirection.east;
+            }
+            else
+            {
+                this.horDir = HorizontalDirection.west;
+            }
+            if (this.destinationY > startY)
+            {
+                this.verDir = VerticalDirection.south;
+            }
+            else
+            {
+                this.verDir = VerticalDirection.north;
+            }
         }
 
     }

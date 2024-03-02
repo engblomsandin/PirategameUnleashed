@@ -62,6 +62,8 @@ namespace PirategameUnleashed
             gridHandler = GridHandler.Instance;
             gridHandler.initializeGrid(rowCount, columnCount, blipList, systemFont);
 
+            Queue<Blip> miniRoute = gridHandler.getRoute();
+
             // TODO: use this.Content to load your game content here
         }
 

@@ -69,5 +69,10 @@ namespace PirategameUnleashed
             return this.blipGrid;
         }
 
+        public Queue<Blip> getRoute()
+        {
+            return routeCalculator.calculate(this.blipGrid.ElementAt(15).ElementAt(15), this.blipGrid.ElementAt(20).ElementAt(20));
+        }
+
     }
 }
