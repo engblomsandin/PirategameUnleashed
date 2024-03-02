@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,9 +21,27 @@ namespace PirategameUnleashed
         private int destinationX = 0;
         private int destinationY = 0;
 
+        private int startX = 0;
+        private int startY = 0;
+
+        private HorizontalDirection horDir;
+        private VerticalDirection verDir;
+
         Queue route = new Queue();
 
         public static RouteCalculator instance = null;
+
+        private enum HorizontalDirection
+        {
+            west,
+            east,
+        }
+
+        private enum VerticalDirection
+        {
+            south,
+            north,
+        }
 
         public static RouteCalculator Instance
         {
@@ -52,6 +71,26 @@ namespace PirategameUnleashed
             this.destinationX = Destination.getColumn();
             this.destinationY = Destination.getRow();
 
+            this.startX = start.getColumn();
+            this.startY = start.getRow();
+
+            if(this.destinationX > startX)
+            {
+                this.horDir = HorizontalDirection.east;
+            }
+            else
+            {
+                this.horDir = HorizontalDirection.west;
+            }
+            if (this.destinationY > startY)
+            {
+                this.verDir = VerticalDirection.south;
+            }
+            else
+            {
+                this.verDir = VerticalDirection.north;
+            }
+
             Debug.WriteLine(this.route.Count);
 
             return this.route;
@@ -72,15 +111,27 @@ namespace PirategameUnleashed
             if(x == destinationX && y == destinationY)
                 this.finished= true;
 
-            if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
-                explore(x, y - 1);
-            if (blipGrid.ElementAt(y).ElementAt(x+1).isNavigatable())
-                explore(x+1, y );
-            if (blipGrid.ElementAt(y+1).ElementAt(x).isNavigatable())
-                explore(x, y+1);
-            if (blipGrid.ElementAt(y).ElementAt(x-1).isNavigatable())
-                explore(x-1, y);
-
+            if(this.horDir == HorizontalDirection.west)
+            {
+                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
+                    explore(x - 1, y);
+            }
+            if (this.verDir == VerticalDirection.north)
+            {
+                if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
+                    explore(x, y - 1);
+            }
+            else
+            {
+                if (blipGrid.ElementAt(y).ElementAt(x + 1).isNavigatable())
+                    explore(x + 1, y);
+                if (blipGrid.ElementAt(y + 1).ElementAt(x).isNavigatable())
+                    explore(x, y + 1);
+                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
+                    explore(x - 1, y);
+                if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
+                    explore(x, y - 1);
+            }
 
             if (finished)
                 return;
