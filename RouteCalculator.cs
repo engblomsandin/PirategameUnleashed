@@ -75,7 +75,7 @@ namespace PirategameUnleashed
             this.startX = start.getColumn();
             this.startY = start.getRow();
 
-            getDirection();
+            getDirection(startX,startY);
             
             explore(startX, startY);
 
@@ -89,62 +89,55 @@ namespace PirategameUnleashed
             Debug.WriteLine("Went to " + x + "," + y);
             Debug.WriteLine("Destination is " + destinationX + "," + destinationY);
 
-            getDirection();
+            getDirection(x,y);
 
-            if (x < 0 || y < 0 || x == DataVariables.columnCount -1 || y == DataVariables.rowCount - 1)
+            Debug.WriteLine("I should head " + this.verDir + this.horDir);
+
+            if (x < 1 || y < 1 || x == DataVariables.columnCount -1 || y == DataVariables.rowCount - 1)
                 return;
 
-            route.Enqueue(blipGrid.ElementAt(y).ElementAt(x));
+            route.Enqueue(blipGrid.ElementAt(y-1).ElementAt(x-1));
 
             if(x == destinationX && y == destinationY)
-                this.finished= true;
+            {
+                Debug.WriteLine("i found it!");
+                this.finished = true;
+            }
+
 
             if (finished)
                 return;
 
-            if (this.horDir == HorizontalDirection.west)
-            {
-                Debug.WriteLine("the destination is to the west, going west");
-                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
-                    explore(x - 1, y);
-            }
-            if (this.verDir == VerticalDirection.north)
-            {
-                Debug.WriteLine("the destination is to the north, going north");
-                if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
-                    explore(x, y - 1);
-            }
-            if (this.horDir == HorizontalDirection.east)
-            {
-                Debug.WriteLine("the destination is to the east, going east");
-                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
-                    explore(x - 1, y);
-            }
-            if (this.verDir == VerticalDirection.south)
-            {
-                Debug.WriteLine("the destination is to the south, going south");
-                if (blipGrid.ElementAt(y + 1).ElementAt(x).isNavigatable())
-                    explore(x, y + 1);
-            }
-            else
-            {
-                if (blipGrid.ElementAt(y).ElementAt(x + 1).isNavigatable())
-                    explore(x + 1, y);
-                if (blipGrid.ElementAt(y + 1).ElementAt(x).isNavigatable())
-                    explore(x, y + 1);
-                if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable())
-                    explore(x - 1, y);
-                if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable())
-                    explore(x, y - 1);
-            }
+            int dice = getBias();
 
+
+
+            switch (dice)
+            {
+                case 1:
+                    if (blipGrid.ElementAt(y).ElementAt(x + 1).isNavigatable()) //Go East
+                        explore(x + 1, y);
+                    break;
+                case 2:
+                    if (blipGrid.ElementAt(y + 1).ElementAt(x).isNavigatable()) //Go South
+                            explore(x, y + 1);
+                    break;
+                case 3:
+                    if (blipGrid.ElementAt(y).ElementAt(x - 1).isNavigatable()) //Go West
+                            explore(x - 1, y);
+                    break;
+                case 4:
+                    if (blipGrid.ElementAt(y - 1).ElementAt(x).isNavigatable()) //Go North
+                            explore(x, y - 1);
+                    break;
+            }   
             if (finished)
                 return;
         }
 
-        public void getDirection()
+        public void getDirection(int x, int y)
         {
-            if (this.destinationX > startX)
+            if (this.destinationX > x)
             {
                 this.horDir = HorizontalDirection.east;
             }
@@ -152,7 +145,7 @@ namespace PirategameUnleashed
             {
                 this.horDir = HorizontalDirection.west;
             }
-            if (this.destinationY > startY)
+            if (this.destinationY > y)
             {
                 this.verDir = VerticalDirection.south;
             }
@@ -160,6 +153,33 @@ namespace PirategameUnleashed
             {
                 this.verDir = VerticalDirection.north;
             }
+        }
+        public int getBias()
+        {
+
+            Random rnd = new Random();
+            if (this.horDir == HorizontalDirection.east)
+            {
+                if (rnd.Next(1, 11) > 5)
+                    return 1;
+            }
+            else
+            {
+                if (rnd.Next(1, 11) > 5)
+                    return 3;
+            }
+            if (this.verDir == VerticalDirection.north)
+            {
+                if (rnd.Next(1, 11) > 5)
+                    return 4;
+            }
+            else
+            {
+                if (rnd.Next(1, 11) > 5)
+                    return 2;
+            }
+            return rnd.Next(1, 5);
+
         }
 
     }

@@ -64,6 +64,11 @@ namespace PirategameUnleashed
 
             Queue<Blip> miniRoute = gridHandler.getRoute();
 
+            while(miniRoute.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine(miniRoute.Dequeue().getPos());
+            }
+
             // TODO: use this.Content to load your game content here
         }
 

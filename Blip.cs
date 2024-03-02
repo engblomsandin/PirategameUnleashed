@@ -174,5 +174,11 @@ namespace PirategameUnleashed
             return this.navigatable;
         }
 
+        public string getPos()
+        {
+            string pos = this.columnNumber + "," + this.rowNumber;
+            return pos;
+        }
+
     }
 }
