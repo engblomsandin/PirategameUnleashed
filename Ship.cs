@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace PirategameUnleashed
 {
 
 
-    internal class Ship
+    public class Ship
     {
         private string name = "";
 
@@ -18,8 +19,21 @@ namespace PirategameUnleashed
         private int capacity = 0;
         private int speed = 0;
 
-        public Ship()
+        private Blip currentBlip;
+        public Ship(Blip currentBlip)
         {
+            this.currentBlip = currentBlip;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+        }
+
+        public void setCurrentBlip(Blip newBlip)
+        {
+            this.currentBlip.setState(BlipType.seaBlip);
+            this.currentBlip = newBlip;
+            this.currentBlip.setState(BlipType.shipBlip);
         }
     }
 }

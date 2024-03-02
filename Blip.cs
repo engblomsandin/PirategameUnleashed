@@ -37,16 +37,6 @@ namespace PirategameUnleashed
 
         private GridHandler gridHandler = GridHandler.Instance;
 
-        enum BlipType
-        {
-            seaBlip,
-            landBlip,
-            cityBlip,
-            companyBlip,
-            shipBlip,
-        }
-
-
         public Blip(int x, int y, List<Texture2D> blipList, SpriteFont systemFont, int rowCount, int columnCount)
         {
             this.xPosition = x;
@@ -138,7 +128,7 @@ namespace PirategameUnleashed
             }
         }
 
-        private void setState(BlipType type)
+        public void setState(BlipType type)
         {
             this.blipState = type;
         }

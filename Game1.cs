@@ -19,6 +19,8 @@ namespace PirategameUnleashed
         public GridHandler gridHandler;
         public Painterboy painterBoy;
 
+        public Company company;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -57,7 +59,7 @@ namespace PirategameUnleashed
             blipList.Add(companyblip);
             blipList.Add(shipblip);
 
-
+            company = new Company();
             painterBoy = Painterboy.Instance;
             gridHandler = GridHandler.Instance;
             gridHandler.initializeGrid(rowCount, columnCount, blipList, systemFont);
@@ -70,11 +72,18 @@ namespace PirategameUnleashed
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            List<Ship> shipList = company.shipList;
+
+            for(int i = 0; i< shipList.Count; i++)
+            {
+                shipList[i].Update(gameTime);
+            }
+
             for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    gridHandler.getGrid()[i][j].Update(gameTime);
+                    gridHandler.getGrid()[i][j].Update(gameTime); 
                 }
             }
 

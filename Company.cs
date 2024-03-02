@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PirategameUnleashed
 {
-    internal class Company
+    public class Company
     {
 
         private int income = 0;
@@ -14,7 +14,7 @@ namespace PirategameUnleashed
 
         private Blip location;
 
-        List<Ship> shipList = new List<Ship>();
+        private List<Ship> shipList = new List<Ship>();
         List<Blip> tradingPostList = new List<Blip>();
 
 
@@ -22,6 +22,11 @@ namespace PirategameUnleashed
         public Company()
         {
 
+        }
+
+        public List<Ship> getShipList()
+        {
+            return this.shipList;
         }
 
     }
