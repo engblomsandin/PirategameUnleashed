@@ -79,7 +79,7 @@ namespace PirategameUnleashed
             
             explore(startX, startY);
 
-            Debug.WriteLine(this.route.Count);
+            Debug.WriteLine("The route is " +this.route.Count + " Steps");
 
             return this.route;
         }
@@ -104,13 +104,10 @@ namespace PirategameUnleashed
                 this.finished = true;
             }
 
-
             if (finished)
                 return;
 
             int dice = getBias();
-
-
 
             switch (dice)
             {
@@ -179,8 +176,6 @@ namespace PirategameUnleashed
                     return 2;
             }
             return rnd.Next(1, 5);
-
         }
-
     }
 }
