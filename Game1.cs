@@ -72,7 +72,7 @@ namespace PirategameUnleashed
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            List<Ship> shipList = company.shipList;
+            List<Ship> shipList = company.getShipList();
 
             for(int i = 0; i< shipList.Count; i++)
             {
